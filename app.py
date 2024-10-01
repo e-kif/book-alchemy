@@ -16,11 +16,9 @@ db.init_app(app)
 @app.route('/add_author', methods=['GET', 'POST'])
 def add_author():
     if request.method == 'GET':
-        args = request.args
-        print(args)
-        return render_template('add_author.html')
+        status = request.args.get('status')
+        return render_template('add_author.html', status=status)
     if request.method == 'POST':
-        print(request.form)
         name = request.form.get('name')
         birth_date = request.form.get('birth_date')
         date_of_death = request.form.get('date_of_death')
