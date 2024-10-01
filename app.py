@@ -1,6 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify, redirect
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, redirect
 from data_models import db, Authors, Books
 
 app = Flask(__name__)
@@ -17,18 +16,25 @@ db.init_app(app)
 def add_author():
     if request.method == 'GET':
         status = request.args.get('status')
-        return render_template('add_author.html', status=status)
+        warning = request.args.get('warning')
+        return render_template('add_author.html', status=status, warning=warning)
     if request.method == 'POST':
-        name = request.form.get('name')
-        birth_date = request.form.get('birth_date')
-        date_of_death = request.form.get('date_of_death')
-        author = Authors(
-            name=name,
-            birth_date=birth_date,
-            date_of_death=date_of_death)
-        db.session.add(author)
-        db.session.commit()
-        return redirect('/add_author?status=success', 302)
+        name = request.form.get('name').strip()
+        birth_date = request.form.get('birth_date').strip()
+        date_of_death = request.form.get('date_of_death').strip()
+        warning = ''
+        status = 'failure'
+        if name and birth_date:
+            author = Authors(
+                name=name,
+                birth_date=birth_date,
+                date_of_death=date_of_death)
+            db.session.add(author)
+            db.session.commit()
+            status = 'success'
+        else:
+            status += '&warning=Author name and birthdate are required fields'
+        return redirect(f'/add_author?status={status}', 302)
 
 
 @app.route('/', methods=['GET'])

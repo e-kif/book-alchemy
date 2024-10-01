@@ -6,9 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
   </head>
   <body>
+
   {% if status == 'success' %}
-  <p style="color: green;">Author was added successfully.</p>
+    <p style="color: green;">Author was added successfully.</p>
+  {% elif status == 'failure' %}
+    <p style="color: red;">Author was not added. {{ warning }}.</p>
   {% endif %}
+
   <form action="/add_author" method="POST">
   <label for="name">Author Name:</label>
   <input type="text" id="name" name="name" required><br><br>
