@@ -4,8 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="static/style.css">
   </head>
   <body>
+  <form action="/" method="get">
+    <input type="checkbox" id="sort" onclick="toggleVisibility('sorting')">
+    <label for="sort">Sort books</label>
+    <div id="sorting" class="hidden">
+      <input type="radio" id="sort-author" value="author">
+      <label for="sort-author">By author name</label>
+
+      <input type="radio" id="sort-title" value="title">
+      <label for="sort-title">By book title</label>
+
+      <input type="radio" id="sort-year" value="publication_year">
+      <label for="sort-year">By publication year</label>
+
+      <input type="submit" value="Sort books">
+    </div>
+  </form>
 
     {% for book in books %}
 
@@ -15,6 +32,6 @@
       <h5>by {{ book[1].name }}</h5>
     </div>
     {% endfor %}
-
+  <script src="static/main.js"></script>
   </body>
 </html>
