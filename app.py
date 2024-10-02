@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect
+from sqlalchemy.sql import text
 from data_models import db, Authors, Books
 
 app = Flask(__name__)
@@ -65,7 +66,15 @@ def add_book():
 
 @app.route('/', methods=['GET'])
 def home_page():
-    books = db.session.query(Books, Authors).join(Authors).all()
+    sort_dict = {'author': 'Authors.name',
+                 'title': 'Books.title',
+                 'publication_year': 'Books.publication_year'}
+    sort = request.args.get('sort-order')
+    if sort in sort_dict:
+        print(sort_dict[sort])
+        books = db.session.query(Books, Authors).join(Authors).order_by(text(sort_dict[sort])).all()
+    else:
+        books = db.session.query(Books, Authors).join(Authors).all()
     if not isinstance(books, list):
         books = [books]
     return render_template('home.html', books=books)
