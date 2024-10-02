@@ -44,21 +44,23 @@ def add_book():
         authors = db.session.query(Authors).all()
         return render_template('add_book.html', status=status, warning=warning, authors=authors)
     if request.method == 'POST':
-        name = request.form.get('name').strip()
-        birth_date = request.form.get('birth_date').strip()
-        date_of_death = request.form.get('date_of_death').strip()
+        title = request.form.get('title').strip()
+        isbn = request.form.get('isbn').strip()
+        publication_year = request.form.get('publication_year')
+        author_id = request.form.get('author_id')
         status = 'failure'
-        if name and birth_date:
-            author = Authors(
-                name=name,
-                birth_date=birth_date,
-                date_of_death=date_of_death)
-            db.session.add(author)
+        if title and isbn:
+            book = Books(
+                isbn=isbn,
+                title=title,
+                publication_year=publication_year,
+                author_id=author_id)
+            db.session.add(book)
             db.session.commit()
             status = 'success'
         else:
-            status += '&warning=Author name and birthdate are required fields'
-        return redirect(f'/add_author?status={status}', 302)
+            status += '&warning=Book title and  name and ISBN are required fields'
+        return redirect(f'/add_book?status={status}', 302)
 
 
 @app.route('/', methods=['GET'])
