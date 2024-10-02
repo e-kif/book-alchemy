@@ -8,7 +8,10 @@
   <body>
 
     {% for book in books %}
-    <div> <h3>{{ book[0].title }}</h3>
+
+    <div>
+      <img src="https://covers.openlibrary.org/b/isbn/{{ book[0].isbn }}-M.jpg" />
+      <h3>{{ book[0].title }}</h3>
       <h5>by {{ book[1].name }}</h5>
     </div>
     {% endfor %}
