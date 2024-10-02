@@ -22,7 +22,31 @@ def add_author():
         name = request.form.get('name').strip()
         birth_date = request.form.get('birth_date').strip()
         date_of_death = request.form.get('date_of_death').strip()
-        warning = ''
+        status = 'failure'
+        if name and birth_date:
+            author = Authors(
+                name=name,
+                birth_date=birth_date,
+                date_of_death=date_of_death)
+            db.session.add(author)
+            db.session.commit()
+            status = 'success'
+        else:
+            status += '&warning=Author name and birthdate are required fields'
+        return redirect(f'/add_author?status={status}', 302)
+
+
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'GET':
+        status = request.args.get('status')
+        warning = request.args.get('warning')
+        authors = db.session.query(Authors).all()
+        return render_template('add_book.html', status=status, warning=warning, authors=authors)
+    if request.method == 'POST':
+        name = request.form.get('name').strip()
+        birth_date = request.form.get('birth_date').strip()
+        date_of_death = request.form.get('date_of_death').strip()
         status = 'failure'
         if name and birth_date:
             author = Authors(
