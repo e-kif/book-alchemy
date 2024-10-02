@@ -34,7 +34,8 @@
       <img src="https://covers.openlibrary.org/b/isbn/{{ book[0].isbn }}-M.jpg" />
       <div class="book-info">
         <h3>{{ book[0].title }}</h3>
-        <h5>by {{ book[1].name }}</h5>
+        <p><em>by {{ book[1].name }}</em></p>
+        <p>{{ book[0].publication_year }}</p>
       </div>
     </div>
     {% endfor %}

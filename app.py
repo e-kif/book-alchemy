@@ -74,7 +74,7 @@ def home_page():
         print(sort_dict[sort])
         books = db.session.query(Books, Authors).join(Authors).order_by(text(sort_dict[sort])).all()
     else:
-        books = db.session.query(Books, Authors).join(Authors).all()
+        books = db.session.query(Books, Authors).join(Authors).order_by(Books.title).all()
     if not isinstance(books, list):
         books = [books]
     return render_template('home.html', books=books)
