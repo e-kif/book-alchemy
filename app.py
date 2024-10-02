@@ -65,7 +65,8 @@ def add_book():
 
 @app.route('/', methods=['GET'])
 def home_page():
-    return render_template('home.html')
+    books = db.session.query(Books).all()
+    return render_template('home.html', books=books)
 
 
 if __name__ == '__main__':
