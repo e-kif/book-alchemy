@@ -65,7 +65,13 @@ def add_book():
 
 @app.route('/', methods=['GET'])
 def home_page():
-    books = db.session.query(Books).all()
+    # books = db.session.query(Books).join(Books.author_id).all()
+    # books = db.session.query(Books).join(Authors).all()
+    books = db.session.query(Books, Authors).join(Authors).all()
+    if not isinstance(books, list):
+        books = [books]
+    print(books[0])
+
     return render_template('home.html', books=books)
 
 
