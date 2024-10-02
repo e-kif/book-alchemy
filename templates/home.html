@@ -7,26 +7,33 @@
     <link rel="stylesheet" href="static/style.css">
   </head>
   <body>
-  <form action="/" method="get" class="sorting-form">
-    <input type="checkbox" id="sort" onclick="toggleVisibility('sorting')">
-    <label for="sort">Sort books</label>
-    <div id="sorting" class="hidden">
-      <div class="radio-button">
-        <input type="radio" id="sort-author" name="sort-order" value="author">
-        <label for="sort-author">By author name</label>
-      </div>
-      <div class="radio-button">
-        <input type="radio" id="sort-title" name="sort-order" value="title">
-        <label for="sort-title">By book title</label>
-      </div>
-      <div class="radio-button">
-        <input type="radio" id="sort-year" name="sort-order" value="publication_year">
-        <label for="sort-year">By publication year</label>
-      </div>
+  <div class="forms">
+    <form action="/" method="get" class="sorting-form">
+      <input type="checkbox" id="sort" onclick="toggleVisibility('sorting')">
+      <label for="sort">Sort books</label>
+      <div id="sorting" class="hidden">
+        <div class="radio-button">
+          <input type="radio" id="sort-author" name="sort-order" value="author">
+          <label for="sort-author">By author name</label>
+        </div>
+        <div class="radio-button">
+          <input type="radio" id="sort-title" name="sort-order" value="title">
+          <label for="sort-title">By book title</label>
+        </div>
+        <div class="radio-button">
+          <input type="radio" id="sort-year" name="sort-order" value="publication_year">
+          <label for="sort-year">By publication year</label>
+        </div>
 
-      <input type="submit" value="Sort books">
-    </div>
-  </form>
+        <input type="submit" value="Sort books">
+      </div>
+    </form>
+    <form action="/" method="get">
+      <input type="text" placeholder="Search a book by title" name="search" id="search-title">
+      <input type="submit" value="Search">
+
+    </form>
+  </div>
   <div class="books">
     {% for book in books %}
 
