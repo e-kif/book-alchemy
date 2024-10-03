@@ -34,6 +34,11 @@
 
     </form>
   </div>
+
+  {% if message is defined %}
+  <p>{{ message }}</p>
+  {% endif %}
+
   <div class="books">
     {% for book in books %}
 
@@ -46,6 +51,7 @@
       </div>
     </div>
     {% endfor %}
+
   </div>
   <script src="static/main.js"></script>
   </body>

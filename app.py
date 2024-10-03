@@ -70,13 +70,17 @@ def home_page():
                  'title': 'Books.title',
                  'publication_year': 'Books.publication_year'}
     sort = request.args.get('sort-order')
+    search = request.args.get('search')
+    if search:
+        books = db.session.query(Books, Authors).join(Authors).order_by(Books.title).filter(Books.title.like(f'%{search}%'))
+        if not books.count():
+            return render_template('home.html',
+                                   message='No books matching search criteria were found.')
+        return render_template('home.html', books=books)
     if sort in sort_dict:
-        print(sort_dict[sort])
         books = db.session.query(Books, Authors).join(Authors).order_by(text(sort_dict[sort])).all()
     else:
         books = db.session.query(Books, Authors).join(Authors).order_by(Books.title).all()
-    if not isinstance(books, list):
-        books = [books]
     return render_template('home.html', books=books)
 
 
