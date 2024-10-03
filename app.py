@@ -89,7 +89,10 @@ def home_page():
 def delete_book(book_id):
     book_to_delete = db.session.query(Books).filter(Books.id == book_id)
     message = f'Book titled "{book_to_delete.value(text("title"))} was deleted.'
+    author_id = book_to_delete[0].author_id
     book_to_delete.delete()
+    if not db.session.query(Books).filter(Books.author_id == author_id).count():
+        db.session.query(Authors).filter(Authors.id == author_id).delete()
     db.session.commit()
     return redirect(f'/?message={message}', 302)
 
