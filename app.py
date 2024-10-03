@@ -71,6 +71,7 @@ def home_page():
                  'publication_year': 'Books.publication_year'}
     sort = request.args.get('sort-order')
     search = request.args.get('search')
+    message = request.args.get('message', '')
     if search:
         books = db.session.query(Books, Authors).join(Authors).order_by(Books.title).filter(Books.title.like(f'%{search}%'))
         if not books.count():
@@ -81,7 +82,16 @@ def home_page():
         books = db.session.query(Books, Authors).join(Authors).order_by(text(sort_dict[sort])).all()
     else:
         books = db.session.query(Books, Authors).join(Authors).order_by(Books.title).all()
-    return render_template('home.html', books=books)
+    return render_template('home.html', books=books, message=message)
+
+
+@app.route('/book/<int:book_id>/delete')
+def delete_book(book_id):
+    book_to_delete = db.session.query(Books).filter(Books.id == book_id)
+    message = f'Book titled "{book_to_delete.value(text("title"))} was deleted.'
+    book_to_delete.delete()
+    db.session.commit()
+    return redirect(f'/?message={message}', 302)
 
 
 if __name__ == '__main__':

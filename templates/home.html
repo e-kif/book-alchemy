@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
   <div class="forms">
@@ -50,11 +50,12 @@
         <h3>{{ book[0].title }}</h3>
         <p><em>by {{ book[1].name }}</em></p>
         <p>{{ book[0].publication_year }}</p>
+        <a href="/book/{{book[0].id}}/delete"><button>Delete book</button></a>
       </div>
     </div>
     {% endfor %}
 
   </div>
-  <script src="static/main.js"></script>
+  <script src="/static/main.js"></script>
   </body>
 </html>

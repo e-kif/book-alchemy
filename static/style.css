@@ -22,7 +22,7 @@ body {
     min-width: 160px;
 }
 
-.sorting-form input[type='submit'] {
+.sorting-form input[type='submit'], button {
     cursor: pointer;
 }
 
