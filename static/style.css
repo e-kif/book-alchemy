@@ -12,7 +12,7 @@ body {
 
 .forms {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     justify-content: start;
     grid-gap: 24px;
     margin: 28px;
