@@ -5,6 +5,7 @@ db = SQLAlchemy()
 
 
 class Authors(db.Model):
+    """sql-alchemy class for working with authors table of the database"""
 
     id: db.Mapped[int] = db.mapped_column(primary_key=True, autoincrement=True)
     name: db.Mapped[str] = db.mapped_column()
@@ -12,9 +13,11 @@ class Authors(db.Model):
     date_of_death: db.Mapped[str] = db.mapped_column()
 
     def __repr__(self):
+        """Defines representation of an object"""
         return f'Author(id = {self.id}, name = {self.name})'
 
     def __str__(self):
+        """Defines how object is shown when it 'printed'"""
         dates = ""
         if self.birth_date:
             dates = f'({self.birth_date}'
@@ -26,7 +29,7 @@ class Authors(db.Model):
 
 
 class Books(db.Model):
-    # __table_name__ = 'books'
+    """sql-alchemy class for working with books table of the database"""
 
     id = db.Column(db.Integer, primary_key=True)
     isbn = db.Column(db.String)
@@ -35,7 +38,9 @@ class Books(db.Model):
     author_id: db.Mapped[int] = db.mapped_column(db.ForeignKey('authors.id'))
 
     def __str__(self):
+        """Defines how object is shown when it 'printed'"""
         return f'{self.id}. {self.title} ({self.publication_year})'
 
     def __repr__(self):
+        """Defines representation of an object"""
         return f'Book(id={self.id}, isbn={self.isbn}, title={self.title}, publication_year={self.publication_year})'

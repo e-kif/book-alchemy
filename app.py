@@ -8,13 +8,15 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:////{os.path.join(os.getcwd(), "data", "library.sqlite")}'
 
 db.init_app(app)
-#
+
+# creating tables in a database. should be run only once
 # with app.app_context():
 #     db.create_all()
 
 
 @app.route('/add_author', methods=['GET', 'POST'])
 def add_author():
+    """Adds a new author to a database with POST request. GET response shows the form for that."""
     if request.method == 'GET':
         status = request.args.get('status')
         warning = request.args.get('warning')
@@ -39,6 +41,7 @@ def add_author():
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
+    """Adds a new book to the library (POST), shows corresponding form (GET)."""
     if request.method == 'GET':
         status = request.args.get('status')
         warning = request.args.get('warning')
@@ -66,6 +69,7 @@ def add_book():
 
 @app.route('/', methods=['GET'])
 def home_page():
+    """Displays all books from the library. User can sort or search the books."""
     sort_dict = {'author': 'Authors.name',
                  'title': 'Books.title',
                  'publication_year': 'Books.publication_year'}
@@ -73,7 +77,9 @@ def home_page():
     search = request.args.get('search')
     message = request.args.get('message', '')
     if search:
-        books = db.session.query(Books, Authors).join(Authors).order_by(Books.title).filter(Books.title.like(f'%{search}%'))
+        books = db.session.query(Books, Authors).join(Authors) \
+            .order_by(Books.title) \
+            .filter(Books.title.like(f'%{search}%'))
         if not books.count():
             return render_template('home.html',
                                    message='No books matching search criteria were found.')
@@ -87,6 +93,7 @@ def home_page():
 
 @app.route('/book/<int:book_id>/delete')
 def delete_book(book_id):
+    """Deletes a book from the database. If no books of an author left, author is being deleted as well"""
     book_to_delete = db.session.query(Books).filter(Books.id == book_id)
     message = f'Book titled "{book_to_delete.value(text("title"))} was deleted.'
     author_id = book_to_delete[0].author_id
