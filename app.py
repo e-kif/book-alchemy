@@ -5,8 +5,8 @@ import sqlalchemy
 from data_models import db, Authors, Books
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/library.sqlite'
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:////{os.path.join(os.getcwd(), "data", "library.sqlite")}'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/library.sqlite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:////{os.path.join(os.getcwd(), "data", "library.sqlite")}'
 
 db.init_app(app)
 
