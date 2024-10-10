@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect
 from sqlalchemy.sql import text
+import sqlalchemy
 from data_models import db, Authors, Books
 
 app = Flask(__name__)
@@ -95,8 +96,11 @@ def home_page():
 def delete_book(book_id):
     """Deletes a book from the database. If no books of an author left, author is being deleted as well"""
     book_to_delete = db.session.query(Books).filter(Books.id == book_id)
-    message = f'Book titled "{book_to_delete.value(text("title"))} was deleted.'
-    author_id = book_to_delete[0].author_id
+    try:
+        message = f'Book titled "{book_to_delete.one().title}" was deleted.'
+    except sqlalchemy.exc.NoResultFound:
+        return redirect(f'/?message=There is no book with {book_id}.')
+    author_id = book_to_delete.one().author_id
     book_to_delete.delete()
     if not db.session.query(Books).filter(Books.author_id == author_id).count():
         db.session.query(Authors).filter(Authors.id == author_id).delete()
@@ -105,4 +109,4 @@ def delete_book(book_id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
